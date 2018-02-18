@@ -10,5 +10,5 @@ One-Click Dev Mode is a simple utility to disable and restore all your Chrome ex
 - Do work...
 - Click toolbar again
 
-Another thing by [Zach Caceres](www.zachcaceres.com)
+Made by [Zach Caceres](www.zachcaceres.com)
 Twitter: @zachcaceres
