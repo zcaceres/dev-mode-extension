@@ -1,5 +1,7 @@
 # One-Click Dev Mode Chrome Extension
 
+Available in the [Chrome Store](https://chrome.google.com/webstore/detail/deemfjhcfpjimhdonachfmilnjheebpk)
+
 ![dev mode extension gif](./assets/dev-mode-extension-demo.gif)
 
 When testing an extension in development, it's useful not to have any other extensions running in your browser.
