@@ -1,0 +1,6 @@
+{
+    "extends": "standard",
+    "rules": {
+      "semi": ["always", "1"]
+    }
+}

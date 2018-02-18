@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "One Click Dev Mode",
+  "version": "1.0",
+  "description": "Disable and restore your Chrome extensions with one click, for easy testing without incognito mode!",
+  "icons": {},
+  "browser_action": {},
+  "author": "Zach Caceres (@zachcaceres | zachcaceres.com)",
+  "background": {
+    "scripts": ["bundle.js"],
+    "persistent": false
+  },
+  "homepage_url": "https://github.com/zcaceres/dev-mode-extension#readme",
+  "permissions": ["management", "storage"],
+  "short_name": "Dev-Mode"
+}
