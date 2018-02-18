@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "One Click Dev Mode",
+  "name": "Dev Mode – One Click",
   "version": "1.0",
   "description": "Disable and restore your Chrome extensions with one click, for easy testing!",
   "icons": {},
