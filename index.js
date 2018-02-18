@@ -1,4 +1,6 @@
-// import extensionHelpers from 'extension-helpers';
+import extensionHelpers from 'extension-helpers';
+const { extensions, localStorage } = extensionHelpers;
+console.log(extensions, localStorage, extensionHelpers);
 
 // BROWSER ACTION =========================
 function init() {
@@ -25,27 +27,31 @@ function toggleExtensions() {
 
 // ROUTINES =========================
 function disableRoutine() {
-  chrome.management.getAll(function(results) {
-    createStateRecord(results);
-    disableEverything();
-    setDisabledState(true);
+  return extensions.getAll()
+    .then(results => {
+      createStateRecord(results);
+      disableEverything();
+      setDisabledState(true);
   });
 }
 
 function enableRoutine() {
-  chrome.management.getAll(function(results) {
-    restoreInitialState();
-    setDisabledState(false);
+  return extensions.getAll()
+    .then(results => {
+      restoreInitialState();
+      setDisabledState(false);
   });
 }
 
 function restoreInitialState() {
-  return get('initialState')
+  return localStorage.get('initialState')
     .then(initialStateObj => {
       const { initialState } = initialStateObj;
       const extensionIds = Object.keys(initialState);
       extensionIds.forEach(extensionId => {
-        chrome.management.setEnabled(extensionId, initialState[extensionId]);
+        const enabled = initialState[extensionId];
+        if (enabled) extensions.enable(extensionId);
+        else extensions.disable(extensionId);
       })
     })
     .catch(err => console.error(err));
@@ -53,11 +59,11 @@ function restoreInitialState() {
 
 // UTILS =========================
 function setDisabledState(state) {
-  chrome.storage.local.set({ disabledState: state });
+  return localStorage.set('disabledState', state);
 }
 
 function isDisabled() {
-  return get('disabledState');
+  return localStorage.get('disabledState');
 }
 
 function createStateRecord(extensions) {
@@ -66,30 +72,16 @@ function createStateRecord(extensions) {
     if (chrome.runtime.id === extension.id) return;
     initialState[extension.id] = extension.enabled
   });
-  chrome.storage.local.set({ initialState });
+  localStorage.set('initialState', initialState);
 }
 
 function disableEverything() {
   chrome.management.getAll(function(results) {
     results.forEach(extension => {
       if (chrome.runtime.id === extension.id) return;
-      chrome.management.setEnabled(extension.id, false);
+      extensions.disable(extension.id);
     });
   });
-}
-
-function get (key) {
-  if (chrome) {
-    return new Promise((resolve, reject) => {
-      chrome.storage.local.get(key, function (itemsObject) {
-        const err = chrome.runtime.lastError;
-        if (err) return reject(err);
-        resolve(itemsObject);
-      });
-    });
-  } else {
-    return browser.storage.local.get(key);
-  }
 }
 
 init();

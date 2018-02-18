@@ -12,17 +12,15 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        exclude : /node_modules/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
           presets: ['env']
         }
       }]
-    },
-    plugins: [new CopyWebpackPlugin([
-          {
-            from: 'manifest.json'
-          }
-        ])
-      ]
+  },
+  plugins: [new CopyWebpackPlugin([
+      { from: 'manifest.json' }
+    ])
+  ]
 }
