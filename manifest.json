@@ -12,5 +12,5 @@
   },
   "homepage_url": "https://github.com/zcaceres/dev-mode-extension#readme",
   "permissions": ["management", "storage"],
-  "short_name": "Dev-Mode"
+  "short_name": "Dev Mode"
 }
