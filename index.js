@@ -1,6 +1,5 @@
 import extensionHelpers from 'extension-helpers';
 const { extensions, localStorage } = extensionHelpers;
-console.log(extensions, localStorage, extensionHelpers);
 
 // BROWSER ACTION =========================
 function init() {
@@ -29,27 +28,46 @@ function toggleExtensions() {
 function disableRoutine() {
   return extensions.getAll()
     .then(results => {
-      createStateRecord(results);
-      disableEverything();
-      setDisabledState(true);
+      createStateRecord(results, 'normalConfig');
+      hasConfig('devConfig')
+        .then(configExists => {
+          console.log('does devConfig exist', configExists);
+          if(configExists) {
+            restoreFromState('devConfig')
+          } else {
+            disableEverything();
+          }
+          setDisabledState(true);
+        });
   });
 }
 
 function enableRoutine() {
   return extensions.getAll()
     .then(results => {
-      restoreInitialState();
+      createStateRecord(results, 'devConfig');
+      restoreFromState('normalConfig');
       setDisabledState(false);
   });
 }
 
-function restoreInitialState() {
-  return localStorage.get('initialState')
-    .then(initialStateObj => {
-      const { initialState } = initialStateObj;
-      const extensionIds = Object.keys(initialState);
+function hasConfig(configName) {
+  return localStorage.get(configName)
+    .then(config => {
+      console.log('CONFIG', config)
+      return Boolean(Object.keys(config).length);
+    });
+  }
+
+function restoreFromState(configName) {
+  console.log('restore state for', configName)
+  return localStorage.get(configName)
+    .then(configObj => {
+      console.log('obj', configObj)
+      const config = configObj[configName];
+      const extensionIds = Object.keys(config);
       extensionIds.forEach(extensionId => {
-        const enabled = initialState[extensionId];
+        const enabled = config[extensionId];
         if (enabled) extensions.enable(extensionId);
         else extensions.disable(extensionId);
       })
@@ -66,13 +84,13 @@ function isDisabled() {
   return localStorage.get('disabledState');
 }
 
-function createStateRecord(extensions) {
-  const initialState = {};
+function createStateRecord(extensions, nameOfRecord) {
+  const state = {};
   extensions.forEach(extension => {
     if (chrome.runtime.id === extension.id) return;
-    initialState[extension.id] = extension.enabled
+    state[extension.id] = extension.enabled
   });
-  localStorage.set('initialState', initialState);
+  localStorage.set(nameOfRecord, state);
 }
 
 function disableEverything() {
