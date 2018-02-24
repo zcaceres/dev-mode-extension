@@ -41,6 +41,6 @@
     "webpack": "^3.11.0"
   },
   "dependencies": {
-    "extension-helpers": "^1.0.6"
+    "extension-helpers": "^1.0.82"
   }
 }

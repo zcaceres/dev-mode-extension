@@ -4,6 +4,7 @@ const { extensions, localStorage } = extensionHelpers;
 // BROWSER ACTION =========================
 function init() {
   listenForBrowserAction();
+  setDisabledState(false);
 }
 
 function listenForBrowserAction() {
@@ -31,12 +32,12 @@ function disableRoutine() {
       createStateRecord(results, 'normalConfig');
       hasConfig('devConfig')
         .then(configExists => {
-          console.log('does devConfig exist', configExists);
           if(configExists) {
             restoreFromState('devConfig')
           } else {
             disableEverything();
           }
+          chrome.browserAction.setBadgeText({ text: 'D' });
           setDisabledState(true);
         });
   });
@@ -47,6 +48,7 @@ function enableRoutine() {
     .then(results => {
       createStateRecord(results, 'devConfig');
       restoreFromState('normalConfig');
+      chrome.browserAction.setBadgeText({ text: '' });
       setDisabledState(false);
   });
 }
@@ -54,16 +56,13 @@ function enableRoutine() {
 function hasConfig(configName) {
   return localStorage.get(configName)
     .then(config => {
-      console.log('CONFIG', config)
       return Boolean(Object.keys(config).length);
     });
   }
 
 function restoreFromState(configName) {
-  console.log('restore state for', configName)
   return localStorage.get(configName)
     .then(configObj => {
-      console.log('obj', configObj)
       const config = configObj[configName];
       const extensionIds = Object.keys(config);
       extensionIds.forEach(extensionId => {
