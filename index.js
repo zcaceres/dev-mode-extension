@@ -65,11 +65,17 @@ function restoreFromState(configName) {
     .then(configObj => {
       const config = configObj[configName];
       const extensionIds = Object.keys(config);
+      let intervalMs = 0;
       extensionIds.forEach(extensionId => {
         const enabled = config[extensionId];
-        if (enabled) extensions.enable(extensionId);
-        else extensions.disable(extensionId);
-      })
+        if (enabled) {
+          setTimeout(() => extensions.enable(extensionId), intervalMs)
+          intervalMs += 10;
+        } else {
+          setTimeout(() => extensions.disable(extensionId), intervalMs);
+          intervalMs += 10;
+        }
+      });
     })
     .catch(err => console.error(err));
 }
