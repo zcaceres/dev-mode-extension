@@ -13,7 +13,7 @@ function listenForBrowserAction() {
 
 // MAIN =========================
 function toggleExtensions() {
-  isDisabled()
+  setTimeout(() => isDisabled()
     .then(stateObj => {
       const { disabledState } = stateObj;
       if (disabledState) {
@@ -22,7 +22,8 @@ function toggleExtensions() {
         disableRoutine();
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error(err))
+  , 200);
 }
 
 // ROUTINES =========================
