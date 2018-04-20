@@ -70,10 +70,10 @@ function restoreFromState(configName) {
       extensionIds.forEach(extensionId => {
         const enabled = config[extensionId];
         if (enabled) {
-          setTimeout(() => extensions.enable(extensionId), intervalMs)
+          setTimeout(() => extensions.enable(extensionId).catch(console.error), intervalMs)
           intervalMs += 10;
         } else {
-          setTimeout(() => extensions.disable(extensionId), intervalMs);
+          setTimeout(() => extensions.disable(extensionId).catch(console.error), intervalMs);
           intervalMs += 10;
         }
       });
@@ -103,7 +103,7 @@ function disableEverything() {
   chrome.management.getAll(function(results) {
     results.forEach(extension => {
       if (chrome.runtime.id === extension.id) return;
-      extensions.disable(extension.id);
+      extensions.disable(extension.id).catch(console.error);
     });
   });
 }
