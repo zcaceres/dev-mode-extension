@@ -1,6 +1,6 @@
 {
   "name": "dev-mode-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Disables and enables your Chrome extensions for easy testing without an incognito mode",
   "main": "index.js",
   "scripts": {
