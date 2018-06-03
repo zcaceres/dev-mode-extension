@@ -8,7 +8,7 @@
   "author": "Zach Caceres (@zachcaceres | zachcaceres.com)",
   "background": {
     "scripts": ["bundle.js"],
-    "persistent": false
+    "persistent": true
   },
   "homepage_url": "https://github.com/zcaceres/dev-mode-extension#readme",
   "permissions": ["management", "storage"],
