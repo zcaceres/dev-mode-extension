@@ -4,7 +4,7 @@
   "description": "Disables and enables your Chrome extensions for easy testing without an incognito mode",
   "main": "index.js",
   "scripts": {
-    "build": "webpack .",
+    "dev": "webpack . --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publish": "webpack . && ./zip.sh"
   },
